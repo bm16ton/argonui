@@ -1,0 +1,25 @@
+#!/bin/sh
+
+GTKDIALOG=gtkdialog
+
+IMAGEFILE="`find /usr/share/pixmaps -maxdepth 1 -type f | head -1`"
+
+MAIN_DIALOG='
+<window>
+	<vbox width-request="300" width="300">
+		<hbox>
+        <hscale space-expand="true" space-fill="true" range-min="1" range-max="100" range-step="1" tooltip-text="select fanspeed">
+                    <default>"'$BSAT'"</default>
+					<variable>BSAT1</variable>
+		        <action>"sudo i2cset -y 1 0x1a $BSAT1"</action>
+				</hscale>
+	    </hbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) echo "$MAIN_DIALOG" ;;
+	*) $GTKDIALOG --program=MAIN_DIALOG ;;
+esac
